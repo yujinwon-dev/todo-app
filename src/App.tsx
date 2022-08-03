@@ -1,17 +1,21 @@
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+// import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import SignUp from './pages/SignUp'
+
+// const queryClient = new QueryClient()
 
 export default function App() {
   return (
-    <div>
-      <h1>Todo App</h1>
-      <nav
-        style={{
-          paddingBottom: "1rem",
-        }}
-      >
-        <Link to="/auth/login">Login</Link> |{" "}
-        <Link to="/auth/signup">SignUp</Link>
-      </nav>
-    </div>
+    // <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="auth/login" element={<Login />} />
+        <Route path="auth/signup" element={<SignUp />} />
+      </Routes>
+    </BrowserRouter>
+    // </QueryClientProvider>
   )
 }
