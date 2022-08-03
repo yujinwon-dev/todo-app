@@ -1,11 +1,15 @@
 import { ReactNode } from "react"
 import styled from "styled-components"
 
-export default function Form({ children } : {
+export default function Form({ handleSubmit, children } : {
+  handleSubmit: () => void,
   children: ReactNode
 }) {
   return (
-    <StyledForm>{children}</StyledForm>
+    <StyledForm onSubmit={e => {
+      e.preventDefault()
+      handleSubmit()
+    }}>{children}</StyledForm>
   )
 }
 

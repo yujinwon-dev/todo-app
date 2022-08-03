@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import { emailRule } from '../utils/formInputRule'
+import { signUp } from '../api/auth'
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const [isDisabled, setIsDisabled] = useState(true)
   const [email, setEmail] = useState('')
   const [pw, setPw] = useState('')
@@ -15,10 +18,16 @@ export default function SignUp() {
     }
     setIsDisabled(false)
   }, [email, pw, pwConfirm])
+  function handleSignUp() {
+    signUp(email, pw)
+      .then(() => {
+        navigate('/')
+      })
+  }
   return (
     <>
       <h1>SignUp</h1>
-      <Form>
+      <Form handleSubmit={handleSignUp}>
         <label htmlFor="email">
           이메일
           <input
