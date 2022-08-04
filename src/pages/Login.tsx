@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAtom } from 'jotai'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import { emailRule } from '../utils/formInputRule'
 import { ResponseData, login } from '../api/auth'
+import { tokenAtom } from '../atoms/auth'
 
 export default function Login() {
+  const [token, setToken] = useAtom(tokenAtom)
   const navigate = useNavigate()
   const [isDisabled, setIsDisabled] = useState(true)
   const [email, setEmail] = useState('')
@@ -19,14 +22,14 @@ export default function Login() {
   }, [email, pw])
 
   function handleLogin() {
-    if (localStorage.getItem('token')) {
+    if (token.length > 0) {
       navigate('/')
       return
     }
     login(email, pw)
       .then(data => {
         const { message, token } = data as ResponseData
-        localStorage.setItem('token', token)
+        setToken(token)
         alert(message)
         navigate('/')
       })
