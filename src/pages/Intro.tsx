@@ -1,11 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import useTokenCheck from "../hooks/useTokenCheck"
 
 export default function Intro() {
   const navigate = useNavigate()
+  const isValidToken = useTokenCheck()
   return (
     <ButtonsWrapper>
-      <LoginButton onClick={() => navigate('/auth/login')}>로그인</LoginButton>
+      <LoginButton onClick={() => {
+        if (isValidToken) {
+          navigate('/')
+        } else {
+          navigate('/auth/login')
+        }
+      }}>로그인</LoginButton>
       <SignUpButton onClick={() => navigate('/auth/login')}>회원가입</SignUpButton>
     </ButtonsWrapper>
   )

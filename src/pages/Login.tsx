@@ -5,7 +5,7 @@ import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import { emailRule } from '../utils/formInputRule'
 import { ResponseData, login } from '../api/auth'
-import { ResponseData as TodoResponseData, getTodos } from '../api/todo'
+import { ResponseData as TodoResponseData, axiosInstance, getTodos } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 
 const token = localStorage.getItem('token')
@@ -33,15 +33,13 @@ export default function Login() {
       .then(data => {
         const { message, token } = data as ResponseData
         localStorage.setItem('token', token)
-        alert(message)
-        // TODO: 로그인 후 새로고침을 해야 todo 목록이 뜨는 버그 해결
-        // 예상: setToken을 통해 token이 비동기적으로 설정되어서 getTodos시 header가 들어가지 않음?
+        axiosInstance.defaults.headers.common.Authorization = token
         getTodos()
-          .then(res => {
-            console.log(res)
-            const resValue = res as TodoResponseData
-            setTodos(resValue.data)
-          })
+        .then(res => {
+          const resValue = res as TodoResponseData
+          setTodos(resValue.data)
+        })
+        alert(message)
         navigate('/')
       })
   }
