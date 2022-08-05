@@ -1,6 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { useAtom } from 'jotai';
-import { tokenAtom } from '../atoms/auth'
 
 export interface ResponseData {
   title: string;
@@ -19,11 +17,12 @@ interface AxiosResponse<T = never> {
   request?: any;
 }
 
-const [token] = useAtom(tokenAtom)
+const token = localStorage.getItem('token')
+
 const axiosInstance = axios.create({
   baseURL: 'http://127.0.0.1:8080/todos',
   headers: {
-    Authorization: token
+    Authorization: token || ''
   }
 })
 
