@@ -1,31 +1,49 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import TodoItem from '../components/TodoItem'
-import { ResponseData, getTodos, createTodo } from '../api/todo'
+import { Todo, ResponseData, getTodos, createTodo } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
-
-interface Response {
-  data: ResponseData[]
-}
+import useTokenCheck from '../hooks/useTokenCheck'
 
 export default function Home() {
   const [todos, setTodos] = useAtom(todosAtom)
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
-  useEffect(() => {
-    getTodos()
-      .then(res => {
-        const resValue = res as Response
-        setTodos(resValue.data)
-      })
-  }, [])
+  const navigate = useNavigate()
+  const isValidToken = useTokenCheck()
 
-  function handleCreateTodo() {
-    createTodo(title, content)
+  function tokenCheck() {
+    if (!isValidToken) {
+      alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
+      navigate('/auth/login')
+      return
+    }
   }
+
+  function getSetTodos() {
+    getTodos()
+    .then(res => {
+      const resValue = res as ResponseData
+      setTodos(resValue.data)
+    })
+  }
+  
+  useEffect(() => {
+    tokenCheck()
+    getSetTodos()
+  }, [])
+  
+  function handleCreateTodo() {
+    tokenCheck()
+    createTodo(title, content)
+      .then(() => {
+        getSetTodos()
+      })
+  }
+  
   return (
     <div>
       <h1>Todo App</h1>
@@ -58,7 +76,7 @@ export default function Home() {
         <FormButton value="추가" disabled={false} />
       </Form>
       <ul>
-        {todos.length > 0 && todos.map((todo: ResponseData) => (
+        {todos && todos.length > 0 && todos.map((todo: Todo) => (
           <TodoItem key={todo.id} id={todo.id} title={todo.title} content={todo.content} />
         ))}
       </ul>

@@ -5,10 +5,13 @@ import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import { emailRule } from '../utils/formInputRule'
 import { ResponseData, login } from '../api/auth'
-import { tokenAtom } from '../atoms/auth'
+import { ResponseData as TodoResponseData, getTodos } from '../api/todo'
+import { todosAtom } from '../atoms/todo'
+
+const token = localStorage.getItem('token')
 
 export default function Login() {
-  const [token, setToken] = useAtom(tokenAtom)
+  const [, setTodos] = useAtom(todosAtom)
   const navigate = useNavigate()
   const [isDisabled, setIsDisabled] = useState(true)
   const [email, setEmail] = useState('')
@@ -22,15 +25,23 @@ export default function Login() {
   }, [email, pw])
 
   function handleLogin() {
-    if (token.length > 0) {
+    if (token) {
       navigate('/')
       return
     }
     login(email, pw)
       .then(data => {
         const { message, token } = data as ResponseData
-        setToken(token)
+        localStorage.setItem('token', token)
         alert(message)
+        // TODO: 로그인 후 새로고침을 해야 todo 목록이 뜨는 버그 해결
+        // 예상: setToken을 통해 token이 비동기적으로 설정되어서 getTodos시 header가 들어가지 않음?
+        getTodos()
+          .then(res => {
+            console.log(res)
+            const resValue = res as TodoResponseData
+            setTodos(resValue.data)
+          })
         navigate('/')
       })
   }
