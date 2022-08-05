@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
@@ -47,14 +47,6 @@ export default function Home() {
   return (
     <div>
       <h1>Todo App</h1>
-      <nav
-        style={{
-          paddingBottom: "1rem",
-        }}
-      >
-        <Link to="/auth/login">Login</Link> |{" "}
-        <Link to="/auth/signup">SignUp</Link>
-      </nav>
       <Form handleSubmit={handleCreateTodo}>
         <label htmlFor="title">
           제목

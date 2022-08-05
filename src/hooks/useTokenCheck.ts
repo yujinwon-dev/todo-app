@@ -1,15 +1,15 @@
-import { useAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 
+const token = localStorage.getItem('token')
+
 export default function useTokenCheck() {
-  const token = localStorage.getItem('token')
-  const [isValid, setIsValid] = useState(true)
+  const [isTokenValid, setIsTokenValid] = useState(true)
 
   useEffect(() => {
     if (!token || token.length === 0) {
-      setIsValid(false)
+      setIsTokenValid(false)
     }
   })
   
-  return isValid
+  return isTokenValid
 }
