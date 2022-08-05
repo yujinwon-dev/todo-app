@@ -1,4 +1,4 @@
 import { atomWithStorage } from 'jotai/utils'
-import { ResponseData } from '../api/todo'
+import { Todo } from '../api/todo'
 
-export const todosAtom = atomWithStorage<ResponseData[]>('todos', [])
+export const todosAtom = atomWithStorage<Todo[] | []>('todos', [])

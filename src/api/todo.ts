@@ -1,11 +1,15 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-export interface ResponseData {
+export interface Todo {
   title: string;
   content: string;
   id: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ResponseData {
+  data: Todo[]
 }
 
 interface AxiosResponse<T = never> {
