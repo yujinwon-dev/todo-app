@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+}
+
 button {
   border: none;
 }

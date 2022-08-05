@@ -97,9 +97,10 @@ export default function TodoItem({ id, title, content }: {
 }
 
 const Li = styled.li`
-  width: 40%;
+  width: 400px;
   border: 1px solid #9f9f9f;
   border-radius: 5px;
+  margin: 1rem;
 `
 const Button = styled.button`
   cursor: pointer;

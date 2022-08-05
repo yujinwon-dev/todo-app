@@ -11,9 +11,13 @@ export default function FormButton({ value, disabled } : {
 
 const Button = styled.button`
   width: 150px;
-  color: #fff;
+  color: #383838;
   font-weight: bold;
-  background-color: #61A8FF;
+  background-color: #9be8d6;
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin: 0.5rem;
+  cursor: pointer;
 
   &:disabled {
     background-color: #c8c8c8;
