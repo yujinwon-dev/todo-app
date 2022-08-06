@@ -62,6 +62,7 @@ export default function TodoItem({ currentTodo }: {
                 name="title"
                 value={inputTitle}
                 onChange={e => setInputTitle(e.target.value)}
+                required
                 />
             </Label>
             <Label htmlFor="content">
@@ -73,6 +74,7 @@ export default function TodoItem({ currentTodo }: {
                 cols={30}
                 value={inputContent}
                 onChange={e => setInputContent(e.target.value)}
+                required
               />
             </Label>
           </LabelsContainer>
@@ -104,7 +106,6 @@ export default function TodoItem({ currentTodo }: {
 
 const Li = styled.li`
   width: 350px;
-  padding: 0.5rem;
   border: 1px solid #9f9f9f;
   border-radius: 5px;
   margin: 1rem;
@@ -112,10 +113,11 @@ const Li = styled.li`
 
 const TodoTitle = styled.p`
   line-height: 1.5;
+  margin: 1rem;
 `
 
 const LabelsContainer = styled.div`
-  padding: 0.5rem;
+  padding-bottom: 0.5rem;
   border-radius: 5px;
 `
 
@@ -168,5 +170,5 @@ const DeleteButton = styled.button`
 `
 
 const UpdateButton = styled(DeleteButton)`
-  margin-right: 1rem;
+  margin: 0 1rem 1rem 1rem;
 `

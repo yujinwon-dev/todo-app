@@ -35,8 +35,8 @@ export default function Detail() {
           </Ul>
         </div>
         <DetailItem>
-          <p>{currentTodo.title}</p>
-          <p>{currentTodo.content}</p>
+          <H2>{currentTodo.title}</H2>
+          <Content>{currentTodo.content}</Content>
           <p>작성일: {currentTodo.createdAt.split('T')[0]}</p>
           <p>수정일: {currentTodo.updatedAt.split('T')[0]}</p>
         </DetailItem>
@@ -59,6 +59,14 @@ const HeaderWrapper = styled.div`
 
 const H1 = styled.h1`
   margin: 1rem 0;
+`
+
+const H2 = styled.h2`
+  margin: 1rem 0;
+`
+
+const Content = styled.p`
+  margin-bottom: 1rem;
 `
 
 const ListDetailContainer = styled.div`

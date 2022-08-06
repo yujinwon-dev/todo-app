@@ -47,6 +47,7 @@ export default function TodoForm() {
             name="title"
             value={title}
             onChange={e => setTitle(e.target.value)}
+            required
             />
         </Label>
         <Label htmlFor="content">
@@ -58,9 +59,12 @@ export default function TodoForm() {
             cols={30}
             value={content}
             onChange={e => setContent(e.target.value)}
+            required
           />
         </Label>
-        <FormButton value="추가" disabled={false} />
+        <ButtonWrapper>
+          <FormButton value="추가" disabled={false} />
+        </ButtonWrapper>
       </LabelsContainer>
     </Form>
   )
@@ -104,4 +108,10 @@ const Textarea = styled.textarea`
   border: none;
   margin-right: 0.5rem;
   background-color: #F6F8FA;
+`
+
+const ButtonWrapper = styled.div`
+  text-align: right;
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
 `
