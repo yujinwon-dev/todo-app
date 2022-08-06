@@ -5,6 +5,7 @@ import { Todo } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 import TodoForm from '../components/TodoForm'
 import TodoItem from '../components/TodoItem'
+import LogoutButton from '../components/LogoutButton'
 
 interface LocationState {
   currentTodo: Todo
@@ -14,9 +15,13 @@ export default function Detail() {
   const [todos] = useAtom(todosAtom)
   const { state } = useLocation()
   const { currentTodo } = state as LocationState
+
   return (
     <Page>
-      <H1>Todo App</H1>
+      <HeaderWrapper>
+        <H1>Todo App</H1>
+        <LogoutButton />
+      </HeaderWrapper>
       <ListDetailContainer>    
         <div>
           <TodoForm />
@@ -44,6 +49,12 @@ const Page = styled.div`
   display: flex;
   flex-direction : column;
   align-items: center;
+`
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
 `
 
 const H1 = styled.h1`

@@ -5,7 +5,7 @@ export default function useTokenCheck() {
   const [isValidToken, setIsValidToken] = useState(true)
 
   useEffect(() => {
-    if (!token || token.length === 0) {
+    if (!token || token === 'undefined') {
       setIsValidToken(false)
     }
   })

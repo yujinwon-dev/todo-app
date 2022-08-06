@@ -7,6 +7,7 @@ import { todosAtom } from '../atoms/todo'
 import useTokenCheck from '../hooks/useTokenCheck'
 import styled from 'styled-components'
 import TodoForm from '../components/TodoForm'
+import LogoutButton from '../components/LogoutButton'
 
 export default function Home() {
   const [todos, setTodos] = useAtom(todosAtom)
@@ -32,7 +33,10 @@ export default function Home() {
   
   return (
     <Page>
-      <H1>Todo App</H1>
+      <HeaderWrapper>
+        <H1>Todo App</H1>
+        <LogoutButton />
+      </HeaderWrapper>
       <TodoForm />
       <Ul>
         {todos && todos.length > 0 && todos.map((todo: Todo) => (
@@ -50,6 +54,12 @@ const Page = styled.div`
   display: flex;
   flex-direction : column;
   align-items: center;
+`
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
 `
 
 const H1 = styled.h1`
