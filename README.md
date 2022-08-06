@@ -8,6 +8,10 @@ npm install
 npm run dev
 ```
 
+## 실행 화면
+
+![todo-capture](README.assets/todo-capture.gif)
+
 ## 과제 구현 목록
 
 ### Assignment 1 - Login / SignUp
