@@ -6,7 +6,7 @@ export default function Intro() {
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
   return (
-    <ButtonsWrapper>
+    <ButtonsContainer>
       <LoginButton onClick={() => {
         if (isValidToken) {
           navigate('/')
@@ -15,11 +15,11 @@ export default function Intro() {
         }
       }}>로그인</LoginButton>
       <SignUpButton onClick={() => navigate('/auth/login')}>회원가입</SignUpButton>
-    </ButtonsWrapper>
+    </ButtonsContainer>
   )
 }
 
-const ButtonsWrapper = styled.div`
+const ButtonsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
