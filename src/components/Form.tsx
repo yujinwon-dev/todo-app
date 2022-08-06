@@ -16,4 +16,5 @@ export default function Form({ handleSubmit, children } : {
 const StyledForm = styled.form`
   display: flex;
   flex-flow: column wrap;
+  margin: 1rem;
 `

@@ -5,7 +5,11 @@
 }
 
 html {
-  min-width: 320px;
+  min-width: 650px;
+}
+
+body {
+  line-height: 1;
 }
 
 button {
