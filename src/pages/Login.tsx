@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { useAtom } from 'jotai'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
@@ -44,29 +45,66 @@ export default function Login() {
       })
   }
   return (
-    <>
-      <h1>Login</h1>
+    <Page>
+      <H1>Login</H1>
       <Form handleSubmit={handleLogin}>
-        <label htmlFor="email">
-          이메일
-          <input
+        <Label htmlFor="email">
+          <LabelSpan>이메일</LabelSpan>
+          <Input
             type="email"
             name="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-        </label>
-        <label htmlFor="pw">
-          비밀번호
-          <input
+        </Label>
+        <Label htmlFor="pw">
+          <LabelSpan>비밀번호</LabelSpan>
+          <Input
             type="password"
             name="pw"
             value={pw}
             onChange={e => setPw(e.target.value)}
           />
-        </label>
+        </Label>
         <FormButton value="로그인" disabled={isDisabled} />
       </Form>
-    </>
+    </Page>
   )
 }
+
+
+const Page = styled.div`
+  display: flex;
+  flex-direction : column;
+  justify-content: center;
+  align-items: center;
+`
+
+const H1 = styled.h1`
+  margin: 1rem 0;
+`
+
+
+const Label = styled.label`
+  display: flex; 
+`
+
+const LabelSpan = styled.span`
+  padding-right: 1rem;
+`
+
+const Input = styled.input`
+  width: 230px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 5px;
+  border: 1px solid #9a9a9a;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  
+  &:focus,
+  &:active {
+    box-shadow: none;
+    outline: none;
+  }
+`

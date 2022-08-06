@@ -16,7 +16,7 @@ const Button = styled.button`
   background-color: #9be8d6;
   padding: 0.5rem;
   border-radius: 5px;
-  margin: 0.5rem;
+  margin: 0.5rem auto;
   cursor: pointer;
 
   &:disabled {

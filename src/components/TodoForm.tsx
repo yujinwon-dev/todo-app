@@ -66,7 +66,6 @@ export default function TodoForm() {
   )
 }
 
-
 const LabelsContainer = styled.div`
   width: 350px;
   background-color: #e3e3e3;

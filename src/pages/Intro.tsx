@@ -14,7 +14,7 @@ export default function Intro() {
           navigate('/auth/login')
         }
       }}>로그인</LoginButton>
-      <SignUpButton onClick={() => navigate('/auth/login')}>회원가입</SignUpButton>
+      <SignUpButton onClick={() => navigate('/auth/signup')}>회원가입</SignUpButton>
     </ButtonsContainer>
   )
 }
