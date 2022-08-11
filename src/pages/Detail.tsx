@@ -1,20 +1,37 @@
+import { useState } from 'react'
 import { useAtom } from 'jotai'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Todo } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 import TodoForm from '../components/TodoForm'
 import TodoItem from '../components/TodoItem'
 import LogoutButton from '../components/LogoutButton'
-
-interface LocationState {
-  currentTodo: Todo
-}
+import { Todo, getTodoById } from '../api/todo'
+import { useEffect } from 'react'
 
 export default function Detail() {
+  const [currentTodo, setCurrentTodo] = useState({
+    title: '',
+    content: '',
+    id: '',
+    createdAt: '',
+    updatedAt: '',
+  })
   const [todos] = useAtom(todosAtom)
-  const { state } = useLocation()
-  const { currentTodo } = state as LocationState
+  const { todoId } = useParams()
+
+  async function handleGetTodo() {
+    try {
+      const { data } = await getTodoById(todoId || '')
+      setCurrentTodo(data)
+    } catch (error) {
+      alert('할 일을 불러올 수 없습니다.')
+    }
+  }
+
+  useEffect(() => {
+    handleGetTodo()
+  }, [todoId])
 
   return (
     <Page>
