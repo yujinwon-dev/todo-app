@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import apiInstance from './axios';
 
 export interface Todo {
   title: string;
@@ -8,67 +8,36 @@ export interface Todo {
   updatedAt: string;
 }
 
-export interface ResponseData {
+export interface TodoData {
+  data: Todo
+}
+
+export interface TodosData {
   data: Todo[]
 }
 
-interface AxiosResponse<T = never> {
-  data: T;
-  status: number;
-  statusText: string;
-  headers: Record<string, string>;
-  config: AxiosRequestConfig<T>;
-  request?: any;
+export const getTodos = async (): Promise<TodosData> => {
+  const { data } = await apiInstance.get('/todos')
+  return data
 }
 
-export const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8080/todos',
-})
-
-axiosInstance.defaults.headers.common.Authorization = localStorage.getItem('token') || ''
-
-export const getTodos = async () => {
-  try {
-    const response: AxiosResponse = await axiosInstance.get('')
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
-
-export const getTodoById = async (id: string) => {
-  try {
-    const response: AxiosResponse = await axiosInstance.get(`/${id}`)
-    return response.data
-  } catch (error) {
-    return error
-  }
+export const getTodoById = async (id: string): Promise<TodoData> => {
+  const { data } = await apiInstance.get(`/todos/${id}`)
+  return data
 }
 
 
-export const createTodo = async (title: string, content: string) => {
-  try {
-    const response: AxiosResponse = await axiosInstance.post('', { title, content })
-    return response.data
-  } catch (error) {
-    return error
-  }
+export const createTodo = async (title: string, content: string): Promise<TodoData> => {
+  const { data } = await apiInstance.post('/todos', { title, content })
+  return data
 }
 
-export const updateTodo = async (id: string, title: string, content: string) => {
-  try {
-    const response: AxiosResponse = await axiosInstance.put(`/${id}`, { title, content })
-    return response.data
-  } catch (error) {
-    return error
-  }
+export const updateTodo = async (id: string, title: string, content: string): Promise<TodoData>  => {
+  const { data } = await apiInstance.put(`/todos/${id}`, { title, content })
+  return data
 }
 
-export const deleteTodo = async (id: string) => {
-  try {
-    const response: AxiosResponse = await axiosInstance.delete(`/${id}`)
-    return response.data
-  } catch (error) {
-    return error
-  }
+export const deleteTodo = async (id: string): Promise<{ data: null }> => {
+  const { data } = await apiInstance.delete(`/${id}`)
+  return data
 }

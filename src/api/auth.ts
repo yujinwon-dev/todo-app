@@ -1,34 +1,17 @@
 
-import axios, { AxiosRequestConfig } from 'axios'
+import apiInstance from './axios';
 
-export interface ResponseData {
+export interface authData {
   message: string;
   token: string;
 }
 
-interface AxiosResponse<T = never>  {
-  data: ResponseData;
-  status: number;
-  statusText: string;
-  headers: Record<string, string>;
-  config: AxiosRequestConfig<T>;
-  request?: any;
+export const login = async (email: string, password: string): Promise<authData> => {
+  const { data } = await apiInstance.post('/users/login', { email, password })
+  return data
 }
 
-export const login = async (email: string, password: string) => {
-  try {
-    const response: AxiosResponse = await axios.post('http://127.0.0.1:8080/users/login', { email, password })
-    return response.data
-  } catch (error) {
-    return error
-  }
-}
-
-export const signUp = async (email: string, password: string) => {
-  try {
-    const response: AxiosResponse = await axios.post('http://127.0.0.1:8080/users/create', { email, password })
-    return response.data
-  } catch (error) {
-    return error
-  }
+export const signUp = async (email: string, password: string): Promise<authData> => {
+  const { data } = await apiInstance.post('/users/create', { email, password })
+  return data
 }
