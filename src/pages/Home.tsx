@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import TodoItem from '../components/TodoItem'
-import { Todo, ResponseData, getTodos } from '../api/todo'
+import { Todo, getTodos } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 import useTokenCheck from '../hooks/useTokenCheck'
 import styled from 'styled-components'
@@ -14,21 +14,26 @@ export default function Home() {
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
 
-  function tokenCheck() {
-    if (!isValidToken) {
-      alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-      navigate('/auth/login')
-      return
-    }
+  function navigateToLogin() {
+    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
+    navigate('/auth/login')
   }
   
+  async function handleGetTodos() {
+    try {
+      const { data } = await getTodos()
+      setTodos(data)
+    } catch (error) {
+      alert('할 일 목록을 가져올 수 없습니다.')
+    }
+  }
+
   useEffect(() => {
-    tokenCheck()
-    getTodos()
-      .then(res => {
-        const resValue = res as ResponseData
-        setTodos(resValue.data)
-      })
+    if (!isValidToken) {
+      navigateToLogin()
+      return
+    }
+    handleGetTodos()
   }, [])
   
   return (
