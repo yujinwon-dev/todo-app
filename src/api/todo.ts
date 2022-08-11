@@ -38,6 +38,6 @@ export const updateTodo = async (id: string, title: string, content: string): Pr
 }
 
 export const deleteTodo = async (id: string): Promise<{ data: null }> => {
-  const { data } = await apiInstance.delete(`/${id}`)
+  const { data } = await apiInstance.delete(`/todos/${id}`)
   return data
 }
