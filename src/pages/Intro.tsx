@@ -5,15 +5,19 @@ import useTokenCheck from "../hooks/useTokenCheck"
 export default function Intro() {
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
+
+  // THOUGHT: 토큰에 따라 navigate이 달라짐. navigateToLogin이라고 하는 게 괜찮을까?
+  function navigateToLogin() {
+    if (isValidToken) {
+      navigate('/')
+    } else {
+      navigate('/auth/login')
+    }
+  }
+
   return (
     <ButtonsContainer>
-      <LoginButton onClick={() => {
-        if (isValidToken) {
-          navigate('/')
-        } else {
-          navigate('/auth/login')
-        }
-      }}>로그인</LoginButton>
+      <LoginButton onClick={() => navigateToLogin()}>로그인</LoginButton>
       <SignUpButton onClick={() => navigate('/auth/signup')}>회원가입</SignUpButton>
     </ButtonsContainer>
   )

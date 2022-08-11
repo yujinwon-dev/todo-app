@@ -1,53 +1,56 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { useAtom } from 'jotai'
 import Form from '../components/Form'
 import FormButton from '../components/FormButton'
 import { emailRule } from '../utils/formInputRule'
-import { ResponseData, login } from '../api/auth'
-import { ResponseData as TodoResponseData, axiosInstance, getTodos } from '../api/todo'
-import { todosAtom } from '../atoms/todo'
-
-const token = localStorage.getItem('token')
+import apiInstance from '../api/axios'
+import { login } from '../api/auth'
+import useTokenCheck from '../hooks/useTokenCheck'
 
 export default function Login() {
-  const [, setTodos] = useAtom(todosAtom)
-  const navigate = useNavigate()
   const [isDisabled, setIsDisabled] = useState(true)
   const [email, setEmail] = useState('')
   const [pw, setPw] = useState('')
-  useEffect(() => {
+  const navigate = useNavigate()
+  const isValidToken = useTokenCheck()
+
+  function validateUserInput() {
     if (emailRule.test(email) === false || pw.length < 8) {
       setIsDisabled(true)
       return
     }
     setIsDisabled(false)
+  }
+
+  useEffect(() => {
+    validateUserInput()
   }, [email, pw])
 
-  function handleLogin() {
-    if (token) {
+  async function handleLogin() {
+    try {
+      const { message, token } = await login(email, pw)
+      localStorage.setItem('token', token)
+      apiInstance.defaults.headers.common.Authorization = token
+      alert(message)
+      navigate('/')
+    } catch (error) {
+      alert('로그인에 실패했습니다.')
+    }
+  }
+
+  function handleFormSubmit() {
+    if (isValidToken) {
       navigate('/')
       return
     }
-    login(email, pw)
-      .then(data => {
-        const { message, token } = data as ResponseData
-        localStorage.setItem('token', token)
-        axiosInstance.defaults.headers.common.Authorization = token
-        getTodos()
-        .then(res => {
-          const resValue = res as TodoResponseData
-          setTodos(resValue.data)
-        })
-        alert(message)
-        navigate('/')
-      })
+    handleLogin()
   }
+
   return (
     <Page>
       <H1>Login</H1>
-      <Form handleSubmit={handleLogin}>
+      <Form handleSubmit={handleFormSubmit}>
         <Label htmlFor="email">
           <LabelSpan>이메일</LabelSpan>
           <Input
