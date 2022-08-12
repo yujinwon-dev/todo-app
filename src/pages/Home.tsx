@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import TodoItem from '../components/todo/TodoItem'
 import { Todo, getTodos } from '../api/todo'
@@ -42,15 +42,20 @@ export default function Home() {
         <H1>Todo App</H1>
         <LogoutButton />
       </HeaderWrapper>
-      <TodoForm />
-      <Ul>
-        {todos && todos.length > 0 && todos.map((todo: Todo) => (
-          <TodoItem
-            key={todo.id}
-            currentTodo={todo}
-          />
-        ))}
-      </Ul>
+      <OutletContainer>
+        <div>
+          <TodoForm />
+          <Ul>
+            {todos && todos.length > 0 && todos.map((todo: Todo) => (
+              <TodoItem
+                key={todo.id}
+                currentTodo={todo}
+              />
+            ))}
+          </Ul>
+        </div>
+        <Outlet />
+      </OutletContainer>
     </Page>
   )
 }
@@ -69,6 +74,10 @@ const HeaderWrapper = styled.div`
 
 const H1 = styled.h1`
   margin: 1rem 0;
+`
+
+const OutletContainer = styled.div`
+  display: flex;  
 `
 
 const Ul = styled.ul`

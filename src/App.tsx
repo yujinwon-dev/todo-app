@@ -18,8 +18,9 @@ export default function App() {
         <Route path="auth/login" element={<Login />} />
         <Route path="auth/signup" element={<SignUp />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/:todoId" element={<Detail />} />
+          <Route path="/" element={<Home />}>
+            <Route path=":todoId" element={<Detail />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
