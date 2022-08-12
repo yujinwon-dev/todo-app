@@ -105,9 +105,9 @@ export default function TodoItem({ currentTodo }: {
         </Form>
       ) : (
         <>
-          <div onClick={() => navigate(`/${currentTodo.id}`)}>
+          <TodoTitleWrapper onClick={() => navigate(`/${currentTodo.id}`)}>
             <TodoTitle>{currentTodo.title}</TodoTitle>
-          </div>
+          </TodoTitleWrapper>
           <div>
             <UpdateButton onClick={() => handleClickUpdate()}>수정</UpdateButton>
             <DeleteButton onClick={() => handleClickDelete()}>삭제</DeleteButton>
@@ -123,6 +123,10 @@ const Li = styled.li`
   border: 1px solid #9f9f9f;
   border-radius: 5px;
   margin: 1rem;
+`
+
+const TodoTitleWrapper = styled.div`
+  cursor: pointer;  
 `
 
 const TodoTitle = styled.p`

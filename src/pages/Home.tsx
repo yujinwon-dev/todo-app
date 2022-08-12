@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import TodoItem from '../components/todo/TodoItem'
 import { Todo, getTodos } from '../api/todo'
@@ -39,7 +39,9 @@ export default function Home() {
   return (
     <Page>
       <HeaderWrapper>
-        <H1>Todo App</H1>
+        <StyledLink to="/">
+          <H1>Todo App</H1>
+        </StyledLink>
         <LogoutButton />
       </HeaderWrapper>
       <OutletContainer>
@@ -70,6 +72,11 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
 `
 
 const H1 = styled.h1`
