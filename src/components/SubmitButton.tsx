@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export default function FormButton({ value, disabled } : {
+export default function SubmitButton({ value, disabled } : {
   value: string,
   disabled: boolean,
 }) {
@@ -21,5 +21,6 @@ const Button = styled.button`
 
   &:disabled {
     background-color: #c8c8c8;
+    cursor: default;
   }
 `

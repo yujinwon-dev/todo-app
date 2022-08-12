@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Form from '../components/Form'
-import FormButton from '../components/FormButton'
+import SubmitButton from '../components/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
 import { signUp } from '../api/auth'
 
@@ -62,7 +62,7 @@ export default function SignUp() {
             onChange={e => setPwConfirm(e.target.value)}
           />
         </Label>
-        <FormButton value="가입" disabled={isDisabled} />
+        <SubmitButton value="가입" disabled={isDisabled} />
       </Form>
     </Page>
   )

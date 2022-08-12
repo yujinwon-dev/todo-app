@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import styled from 'styled-components'
 import Form from '../components/Form'
-import FormButton from '../components/FormButton'
+import SubmitButton from './SubmitButton'
 import { getTodos, createTodo } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 import useTokenCheck from '../hooks/useTokenCheck'
@@ -77,7 +77,7 @@ export default function TodoForm() {
           />
         </Label>
         <ButtonWrapper>
-          <FormButton value="추가" disabled={false} />
+          <SubmitButton value="추가" disabled={false} />
         </ButtonWrapper>
       </LabelsContainer>
     </Form>
