@@ -46,10 +46,9 @@ export default function TodoItem({ currentTodo }: {
     }
   }
 
-  function handleDeleteTodo() {
-    // TODO: try/catch 잘 되는지 확인 필요
+  async function handleDeleteTodo() {
     try {
-      deleteTodo(currentTodo.id)
+      const responseData = await deleteTodo(currentTodo.id)
       const newTodos = todos.filter(todo => todo.id !== currentTodo.id)
       setTodos(newTodos)
     } catch (error) {
