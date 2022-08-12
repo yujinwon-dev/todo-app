@@ -8,13 +8,30 @@ npm install
 npm run dev
 ```
 
-## 실행 화면
+## 목차
 
-![todo-capture](README.assets/todo-capture.gif)
+- [기술 스택](##기술-스택)
+
+- [리팩토링 과정](##리팩토링-과정)
+- [과제 구현 목록](##과제-구현-목록)
+
+## 기술 스택
+
+- React
+- TypeScript
+- Jotai
+- styled-components
+- Axios
+
+## 리팩토링 과정
+
+- [1차 리팩토링](https://velog.io/@wonyuuu/React-Todo-App-%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81)
 
 ## 과제 구현 목록
 
 ### Assignment 1 - Login / SignUp
+
+![auth_screen](README.assets/auth_screen.gif)
 
 - /auth 경로에 로그인 / 회원가입 기능을 개발합니다
 
@@ -39,6 +56,8 @@ npm run dev
   - [x] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
 
 ### Assignment 2 - Todo List
+
+![todo_screen](README.assets/todo_screen.gif)
 
 - Todo List API를 호출하여 Todo List CRUD 기능을 구현해주세요
 
