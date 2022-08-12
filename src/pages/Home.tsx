@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import TodoItem from '../components/TodoItem'
+import TodoItem from '../components/todo/TodoItem'
 import { Todo, getTodos } from '../api/todo'
 import { todosAtom } from '../atoms/todo'
 import useTokenCheck from '../hooks/useTokenCheck'
 import styled from 'styled-components'
-import TodoForm from '../components/TodoForm'
-import LogoutButton from '../components/LogoutButton'
+import TodoForm from '../components/todo/TodoForm'
+import LogoutButton from '../components/common/LogoutButton'
 
 export default function Home() {
   const [todos, setTodos] = useAtom(todosAtom)

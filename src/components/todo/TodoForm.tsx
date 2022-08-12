@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import styled from 'styled-components'
-import Form from '../components/Form'
-import SubmitButton from './SubmitButton'
-import { getTodos, createTodo } from '../api/todo'
-import { todosAtom } from '../atoms/todo'
-import useTokenCheck from '../hooks/useTokenCheck'
+import Form from '../common/Form'
+import SubmitButton from '../common/SubmitButton'
+import { getTodos, createTodo } from '../../api/todo'
+import { todosAtom } from '../../atoms/todo'
+import useTokenCheck from '../../hooks/useTokenCheck'
 
 export default function TodoForm() {
   const [todos, setTodos] = useAtom(todosAtom)

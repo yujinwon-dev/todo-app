@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import Form from '../components/Form'
-import SubmitButton from '../components/SubmitButton'
+import Form from '../components/common/Form'
+import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
 import { signUp } from '../api/auth'
 
