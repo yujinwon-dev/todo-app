@@ -3,10 +3,7 @@ import { useAtom } from 'jotai'
 import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { todosAtom } from '../atoms/todo'
-import TodoForm from '../components/todo/TodoForm'
-import TodoItem from '../components/todo/TodoItem'
-import LogoutButton from '../components/common/LogoutButton'
-import { Todo, getTodoById } from '../api/todo'
+import { getTodoById } from '../api/todo'
 import { useEffect } from 'react'
 
 const emptyTodo = {
