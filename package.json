@@ -9,15 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.0",
-    "@emotion/styled": "^11.10.0",
-    "@mui/material": "^5.10.0",
     "@tanstack/react-query": "^4.0.10",
     "@tanstack/react-query-devtools": "^4.0.10",
     "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
+    "react-toastify": "^9.0.8",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
