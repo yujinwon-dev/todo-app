@@ -1,18 +1,18 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Form from '../common/Form'
 import SubmitButton from '../common/SubmitButton'
-import useTokenCheck from '../../hooks/useTokenCheck'
 import useMutateTodo from '../../hooks/queries/useMutateTodo'
-import { AxiosError } from 'axios'
 import { useQueryClient } from '@tanstack/react-query'
+import { useAuthToken } from '../../hooks/useAuthToken'
+import { useNavigate } from 'react-router-dom'
 
 export default function TodoForm() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
+  const { getToken } = useAuthToken()
+  const authToken = getToken() || ''
   const queryClient = useQueryClient()
   const { useCreateTodo } = useMutateTodo()
   const { mutate: createTodo } = useCreateTodo({
@@ -21,24 +21,11 @@ export default function TodoForm() {
       setContent('')
       queryClient.invalidateQueries(['get_todos'])
     },
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
-    },
+    onError: () => navigate('/intro'),
   })
 
-  function goToLogin() {
-    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-    navigate('/auth/login')
-  }
-
   function handleFormSubmit() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    createTodo({ title, content })
+    createTodo({ title, content, authToken })
   }
 
   return (

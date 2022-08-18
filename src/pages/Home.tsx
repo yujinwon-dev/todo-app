@@ -1,34 +1,15 @@
-import { useEffect } from 'react'
-import { useNavigate, Outlet, Link } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import TodoItem from '../components/todo/TodoItem'
 import { Todo } from '../types/todo'
-import useTokenCheck from '../hooks/useTokenCheck'
 import styled from 'styled-components'
 import TodoForm from '../components/todo/TodoForm'
 import LogoutButton from '../components/common/LogoutButton'
 import useTodo from '../hooks/queries/useTodo'
 import Loader from '../components/common/Loader'
-import { AxiosError } from 'axios'
 
 export default function Home() {
-  const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
   const { useGetTodos } = useTodo()
-  const { status, data, error, isFetching } = useGetTodos({
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
-    },
-  })
-
-  useEffect(() => {
-    if (!isValidToken) {
-      alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-      navigate('/auth/login')
-      return
-    }
-  }, [])
+  const { status, data } = useGetTodos({})
 
   return (
     <Page>

@@ -2,62 +2,33 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import Form from '../common/Form'
 import { Todo } from '../../types/todo'
-import useTokenCheck from '../../hooks/useTokenCheck'
 import { useNavigate } from 'react-router-dom'
 import useMutateTodo from '../../hooks/queries/useMutateTodo'
 import { useQueryClient } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { useAuthToken } from '../../hooks/useAuthToken'
 
 export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
   const [editMode, setEditMode] = useState(false)
   const [inputTitle, setInputTitle] = useState(currentTodo.title)
   const [inputContent, setInputContent] = useState(currentTodo.content)
   const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
+  const { getToken } = useAuthToken()
+  const authToken = getToken() || ''
   const queryClient = useQueryClient()
   const { useUpdateTodo, useDeleteTodo } = useMutateTodo()
   const { mutate: updateTodo } = useUpdateTodo({
-    onSuccess: () => {
-      queryClient.invalidateQueries(['get_todos'])
-      queryClient.invalidateQueries(['get_todo', currentTodo.id])
-    },
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
-    },
+    onError: () => navigate('/intro'),
   })
   const { mutate: deleteTodo } = useDeleteTodo({
     onSuccess: () => {
       queryClient.invalidateQueries(['get_todos'])
       queryClient.invalidateQueries(['get_todo', currentTodo.id])
     },
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
-    },
+    onError: () => navigate('/intro'),
   })
 
-  function goToLogin() {
-    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-    navigate('/auth/login')
-  }
-
-  function handleClickUpdate() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    setEditMode(true)
-  }
-
   function handleClickDelete() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    deleteTodo({ todoId: currentTodo.id })
+    deleteTodo({ todoId: currentTodo.id, authToken })
   }
 
   function handleFormSubmit() {
@@ -65,6 +36,7 @@ export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
       todoId: currentTodo.id,
       title: inputTitle,
       content: inputContent,
+      authToken,
     })
     setEditMode(false)
   }
@@ -111,9 +83,7 @@ export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
             <TodoTitle>{currentTodo.title}</TodoTitle>
           </TodoTitleWrapper>
           <div>
-            <UpdateButton onClick={() => handleClickUpdate()}>
-              수정
-            </UpdateButton>
+            <UpdateButton onClick={() => setEditMode(true)}>수정</UpdateButton>
             <DeleteButton onClick={() => handleClickDelete()}>
               삭제
             </DeleteButton>

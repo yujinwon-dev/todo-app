@@ -2,20 +2,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import useTodo from '../hooks/queries/useTodo'
 import Loader from '../components/common/Loader'
-import { AxiosError } from 'axios'
 
 export default function Detail() {
   const { todoId } = useParams()
   const navigate = useNavigate()
   const { useGetTodo } = useTodo()
-  const { status, data, error, isFetching } = useGetTodo(todoId || '', {
+  const { status, data } = useGetTodo(todoId || '', {
     enabled: !!todoId,
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-        navigate('/')
-      }
-    },
+    onError: () => navigate('/'),
   })
 
   return (

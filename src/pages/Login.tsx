@@ -7,7 +7,8 @@ import { emailRule } from '../utils/formInputRule'
 import useTokenCheck from '../hooks/useTokenCheck'
 import useAuth from '../hooks/queries/useAuth'
 import apiInstance from '../api/axios'
-import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
+import { useAuthToken } from '../hooks/useAuthToken'
 
 export default function Login() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -15,19 +16,14 @@ export default function Login() {
   const [pw, setPw] = useState('')
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
+  const { setToken } = useAuthToken()
   const { useLogin } = useAuth()
   const { mutate: login } = useLogin({
     onSuccess: data => {
       const { message, token } = data
-      localStorage.setItem('token', token)
-      apiInstance.defaults.headers.common.Authorization = token
-      alert(message)
+      setToken(token)
       navigate('/')
-    },
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
+      toast.success(message)
     },
   })
 

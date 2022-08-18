@@ -5,7 +5,8 @@ import Form from '../components/common/Form'
 import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
 import useAuth from '../hooks/queries/useAuth'
-import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
+import toastOptions from '../utils/toastOptions'
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -15,13 +16,10 @@ export default function SignUp() {
   const navigate = useNavigate()
   const { useSignUp } = useAuth()
   const { mutate: signUp } = useSignUp({
-    onSuccess: () => {
+    onSuccess: data => {
+      const { message } = data
       navigate('/auth/login')
-    },
-    onError: error => {
-      if (error instanceof AxiosError) {
-        alert(error.response?.data.details)
-      }
+      toast.success(message, toastOptions)
     },
   })
 

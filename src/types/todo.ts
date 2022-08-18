@@ -9,12 +9,15 @@ export interface Todo {
 export interface CreateTodoProps {
   title: string
   content: string
+  authToken: string
 }
 
-export interface DeleteTodoProps {
+export interface GetDeleteTodoProps {
   todoId: string
+  authToken: string
 }
 
 export interface UpdateTodoProps extends CreateTodoProps {
   todoId: string
+  authToken: string
 }
