@@ -1,57 +1,38 @@
-import { useState } from 'react'
-import { useAtom } from 'jotai'
 import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { todosAtom } from '../atoms/todo'
-import TodoForm from '../components/todo/TodoForm'
-import TodoItem from '../components/todo/TodoItem'
-import LogoutButton from '../components/common/LogoutButton'
-import { Todo, getTodoById } from '../api/todo'
-import { useEffect } from 'react'
-
-const emptyTodo = {
-  title: '',
-  content: '',
-  id: '',
-  createdAt: '',
-  updatedAt: '',
-}
+import useTodo from '../hooks/queries/useTodo'
+import Loader from '../components/common/Loader'
 
 export default function Detail() {
-  const [currentTodo, setCurrentTodo] = useState(emptyTodo)
-  const [todos] = useAtom(todosAtom)
   const { todoId } = useParams()
   const navigate = useNavigate()
-
-  async function handleGetTodo() {
-    try {
-      const { data } = await getTodoById(todoId || '')
-      setCurrentTodo(data)
-    } catch (error) {
-      alert('할 일을 불러올 수 없습니다.')
-      navigate('/')
-    }
-  }
-
-  useEffect(() => {
-    handleGetTodo()
-  }, [todoId, todos])
+  const { useGetTodo } = useTodo()
+  const { status, data } = useGetTodo(todoId || '', {
+    enabled: !!todoId,
+    onError: () => navigate('/'),
+  })
 
   return (
     <Page>
-      <DetailItem>
-        <H2>{currentTodo.title}</H2>
-        <Content>{currentTodo.content}</Content>
-        <p>작성일: {currentTodo.createdAt.split('T')[0]}</p>
-        <p>수정일: {currentTodo.updatedAt.split('T')[0]}</p>
-      </DetailItem>
+      {status === 'loading' ? (
+        <Loader />
+      ) : (
+        data && (
+          <DetailItem>
+            <H2>{data.data.title}</H2>
+            <Content>{data.data.content}</Content>
+            <p>작성일: {data.data.createdAt.split('T')[0]}</p>
+            <p>수정일: {data.data.updatedAt.split('T')[0]}</p>
+          </DetailItem>
+        )
+      )}
     </Page>
   )
 }
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   align-items: center;
 `
 

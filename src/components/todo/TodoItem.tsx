@@ -1,74 +1,48 @@
 import { useState } from 'react'
-import { useAtom } from 'jotai'
 import styled from 'styled-components'
 import Form from '../common/Form'
-import { deleteTodo, Todo, updateTodo } from '../../api/todo'
-import { todosAtom } from '../../atoms/todo'
-import useTokenCheck from '../../hooks/useTokenCheck'
+import { Todo } from '../../types/todo'
 import { useNavigate } from 'react-router-dom'
+import useMutateTodo from '../../hooks/queries/useMutateTodo'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAuthToken } from '../../hooks/useAuthToken'
 
-export default function TodoItem({ currentTodo }: {
-  currentTodo: Todo,
-}) {
-  const [todos, setTodos] = useAtom(todosAtom)
+export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
   const [editMode, setEditMode] = useState(false)
   const [inputTitle, setInputTitle] = useState(currentTodo.title)
   const [inputContent, setInputContent] = useState(currentTodo.content)
   const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
-
-  function goToLogin() {
-    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-    navigate('/auth/login')
-  }
-
-  function handleClickUpdate() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    setEditMode(true)
-  }
-
-  async function handleUpdateTodo() {
-    try {
-      const { data } = await updateTodo(currentTodo.id, inputTitle, inputContent)
-      const newTodos = todos.map(todo => {
-        if (todo.id === currentTodo.id) {
-          return data
-        } else {
-          return todo
-        }
-      })
-      setTodos(newTodos)
-    } catch (error) {
-      alert('할 일을 수정할 수 없습니다.')
-    }
-  }
-
-  async function handleDeleteTodo() {
-    try {
-      const responseData = await deleteTodo(currentTodo.id)
-      const newTodos = todos.filter(todo => todo.id !== currentTodo.id)
-      setTodos(newTodos)
-    } catch (error) {
-      alert('할 일을 삭제할 수 없습니다.')
-    }
-  }
+  const { getToken } = useAuthToken()
+  const authToken = getToken() || ''
+  const queryClient = useQueryClient()
+  const { useUpdateTodo, useDeleteTodo } = useMutateTodo()
+  const { mutate: updateTodo } = useUpdateTodo({
+    onSuccess: () =>
+      queryClient.invalidateQueries(['get_todo', currentTodo.id]),
+    onError: () => navigate('/intro'),
+  })
+  const { mutate: deleteTodo } = useDeleteTodo({
+    onSuccess: () => {
+      queryClient.invalidateQueries(['get_todos'])
+      queryClient.invalidateQueries(['get_todo', currentTodo.id])
+    },
+    onError: () => navigate('/intro'),
+  })
 
   function handleClickDelete() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    handleDeleteTodo()
+    deleteTodo({ todoId: currentTodo.id, authToken })
   }
 
   function handleFormSubmit() {
-    handleUpdateTodo()
+    updateTodo({
+      todoId: currentTodo.id,
+      title: inputTitle,
+      content: inputContent,
+      authToken,
+    })
     setEditMode(false)
   }
-  
+
   return (
     <Li>
       {editMode ? (
@@ -83,7 +57,7 @@ export default function TodoItem({ currentTodo }: {
                 value={inputTitle}
                 onChange={e => setInputTitle(e.target.value)}
                 required
-                />
+              />
             </Label>
             <Label htmlFor="content">
               <LabelSpan>내용</LabelSpan>
@@ -100,7 +74,9 @@ export default function TodoItem({ currentTodo }: {
           </LabelsContainer>
           <ButtonsContainer>
             <UpdateButton type="submit">수정</UpdateButton>
-            <UpdateButton type="button" onClick={() => setEditMode(false)}>취소</UpdateButton>
+            <UpdateButton type="button" onClick={() => setEditMode(false)}>
+              취소
+            </UpdateButton>
           </ButtonsContainer>
         </Form>
       ) : (
@@ -109,8 +85,10 @@ export default function TodoItem({ currentTodo }: {
             <TodoTitle>{currentTodo.title}</TodoTitle>
           </TodoTitleWrapper>
           <div>
-            <UpdateButton onClick={() => handleClickUpdate()}>수정</UpdateButton>
-            <DeleteButton onClick={() => handleClickDelete()}>삭제</DeleteButton>
+            <UpdateButton onClick={() => setEditMode(true)}>수정</UpdateButton>
+            <DeleteButton onClick={() => handleClickDelete()}>
+              삭제
+            </DeleteButton>
           </div>
         </>
       )}
@@ -126,7 +104,7 @@ const Li = styled.li`
 `
 
 const TodoTitleWrapper = styled.div`
-  cursor: pointer;  
+  cursor: pointer;
 `
 
 const TodoTitle = styled.p`
@@ -140,7 +118,7 @@ const LabelsContainer = styled.div`
 `
 
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -156,7 +134,7 @@ const Input = styled.input`
   margin-right: 0.5rem;
   margin-bottom: 1rem;
   background-color: #e8e8e8;
-  
+
   &:focus,
   &:active {
     box-shadow: none;

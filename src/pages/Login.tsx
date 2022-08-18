@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import Form from '../components/common/Form'
 import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
-import apiInstance from '../api/axios'
-import { login } from '../api/auth'
 import useTokenCheck from '../hooks/useTokenCheck'
+import useAuth from '../hooks/queries/useAuth'
+import apiInstance from '../api/axios'
+import { toast } from 'react-toastify'
+import { useAuthToken } from '../hooks/useAuthToken'
 
 export default function Login() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -14,6 +16,16 @@ export default function Login() {
   const [pw, setPw] = useState('')
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
+  const { setToken } = useAuthToken()
+  const { useLogin } = useAuth()
+  const { mutate: login } = useLogin({
+    onSuccess: data => {
+      const { message, token } = data
+      setToken(token)
+      navigate('/')
+      toast.success(message)
+    },
+  })
 
   function validateUserInput() {
     if (emailRule.test(email) === false || pw.length < 8) {
@@ -28,15 +40,7 @@ export default function Login() {
   }, [email, pw])
 
   async function handleLogin() {
-    try {
-      const { message, token } = await login(email, pw)
-      localStorage.setItem('token', token)
-      apiInstance.defaults.headers.common.Authorization = token
-      alert(message)
-      navigate('/')
-    } catch (error) {
-      alert('로그인에 실패했습니다.')
-    }
+    login({ email, password: pw })
   }
 
   function handleFormSubmit() {
@@ -75,10 +79,9 @@ export default function Login() {
   )
 }
 
-
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
@@ -87,9 +90,8 @@ const H1 = styled.h1`
   margin: 1rem 0;
 `
 
-
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -104,7 +106,7 @@ const Input = styled.input`
   border: 1px solid #9a9a9a;
   margin-right: 0.5rem;
   margin-bottom: 1rem;
-  
+
   &:focus,
   &:active {
     box-shadow: none;

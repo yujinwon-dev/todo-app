@@ -1,41 +1,16 @@
-import { useEffect } from 'react'
-import { useNavigate, Outlet, Link } from 'react-router-dom'
-import { useAtom } from 'jotai'
+import { Outlet, Link } from 'react-router-dom'
 import TodoItem from '../components/todo/TodoItem'
-import { Todo, getTodos } from '../api/todo'
-import { todosAtom } from '../atoms/todo'
-import useTokenCheck from '../hooks/useTokenCheck'
+import { Todo } from '../types/todo'
 import styled from 'styled-components'
 import TodoForm from '../components/todo/TodoForm'
 import LogoutButton from '../components/common/LogoutButton'
+import useTodo from '../hooks/queries/useTodo'
+import Loader from '../components/common/Loader'
 
 export default function Home() {
-  const [todos, setTodos] = useAtom(todosAtom)
-  const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
+  const { useGetTodos } = useTodo()
+  const { status, data } = useGetTodos({})
 
-  function navigateToLogin() {
-    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-    navigate('/auth/login')
-  }
-  
-  async function handleGetTodos() {
-    try {
-      const { data } = await getTodos()
-      setTodos(data)
-    } catch (error) {
-      alert('할 일 목록을 가져올 수 없습니다.')
-    }
-  }
-
-  useEffect(() => {
-    if (!isValidToken) {
-      navigateToLogin()
-      return
-    }
-    handleGetTodos()
-  }, [])
-  
   return (
     <Page>
       <HeaderWrapper>
@@ -47,14 +22,19 @@ export default function Home() {
       <OutletContainer>
         <div>
           <TodoForm />
-          <Ul>
-            {todos && todos.length > 0 && todos.map((todo: Todo) => (
-              <TodoItem
-                key={todo.id}
-                currentTodo={todo}
-              />
-            ))}
-          </Ul>
+          {status === 'loading' ? (
+            <Loader />
+          ) : (
+            data && (
+              <Ul>
+                {data.data &&
+                  data.data.length > 0 &&
+                  data.data.map((todo: Todo) => (
+                    <TodoItem key={todo.id} currentTodo={todo} />
+                  ))}
+              </Ul>
+            )
+          )}
         </div>
         <Outlet />
       </OutletContainer>
@@ -64,7 +44,7 @@ export default function Home() {
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   align-items: center;
 `
 
@@ -84,7 +64,7 @@ const H1 = styled.h1`
 `
 
 const OutletContainer = styled.div`
-  display: flex;  
+  display: flex;
 `
 
 const Ul = styled.ul`

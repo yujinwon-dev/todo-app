@@ -1,53 +1,31 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAtom } from 'jotai'
 import styled from 'styled-components'
 import Form from '../common/Form'
 import SubmitButton from '../common/SubmitButton'
-import { getTodos, createTodo } from '../../api/todo'
-import { todosAtom } from '../../atoms/todo'
-import useTokenCheck from '../../hooks/useTokenCheck'
+import useMutateTodo from '../../hooks/queries/useMutateTodo'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAuthToken } from '../../hooks/useAuthToken'
+import { useNavigate } from 'react-router-dom'
 
 export default function TodoForm() {
-  const [todos, setTodos] = useAtom(todosAtom)
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const navigate = useNavigate()
-  const isValidToken = useTokenCheck()
-
-  function goToLogin() {
-    alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
-    navigate('/auth/login')
-  }
-
-  // THOUGHT: handleGetTodos 함수를 훅 or utils로 뺄까 고민 중
-  async function handleGetTodos() {
-    try {
-      const { data } = await getTodos()
-      setTodos(data)
-    } catch (error) {
-      alert('할 일 목록을 가져올 수 없습니다.')
-    }
-  }
-
-  async function handleCreateTodo() {
-    try {
-      // create 시 리턴값이 없어서 다시 get 요청 보내는 코드 유지
-      const responseData = await createTodo(title, content)
+  const { getToken } = useAuthToken()
+  const authToken = getToken() || ''
+  const queryClient = useQueryClient()
+  const { useCreateTodo } = useMutateTodo()
+  const { mutate: createTodo } = useCreateTodo({
+    onSuccess: () => {
       setTitle('')
       setContent('')
-      handleGetTodos()
-    } catch (error) {
-      alert('할 일을 생성할 수 없습니다.')
-    }
-  }
+      queryClient.invalidateQueries(['get_todos'])
+    },
+    onError: () => navigate('/intro'),
+  })
 
   function handleFormSubmit() {
-    if (!isValidToken) {
-      goToLogin()
-      return
-    }
-    handleCreateTodo()
+    createTodo({ title, content, authToken })
   }
 
   return (
@@ -62,10 +40,10 @@ export default function TodoForm() {
             value={title}
             onChange={e => setTitle(e.target.value)}
             required
-            />
+          />
         </Label>
         <Label htmlFor="content">
-        <LabelSpan>내용</LabelSpan>
+          <LabelSpan>내용</LabelSpan>
           <Textarea
             id="content"
             name="content"
@@ -92,7 +70,7 @@ const LabelsContainer = styled.div`
 `
 
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -107,21 +85,21 @@ const Input = styled.input`
   border: none;
   margin-right: 0.5rem;
   margin-bottom: 1rem;
-  background-color: #F6F8FA;
-  
+  background-color: #f6f8fa;
+
   &:focus,
   &:active {
     box-shadow: none;
     outline: none;
   }
-  `
+`
 
 const Textarea = styled.textarea`
   padding: 0 1rem;
   border-radius: 5px;
   border: none;
   margin-right: 0.5rem;
-  background-color: #F6F8FA;
+  background-color: #f6f8fa;
 `
 
 const ButtonWrapper = styled.div`

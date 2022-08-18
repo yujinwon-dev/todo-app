@@ -1,13 +1,20 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useAuthToken } from '../../hooks/useAuthToken'
 
 export default function LogoutButton() {
   const navigate = useNavigate()
+  const { removeToken } = useAuthToken()
+
   return (
-    <Button onClick={() => {
-      localStorage.removeItem('token')
-      navigate('/intro')
-    }}>로그아웃</Button>
+    <Button
+      onClick={() => {
+        removeToken()
+        navigate('/intro')
+      }}
+    >
+      로그아웃
+    </Button>
   )
 }
 

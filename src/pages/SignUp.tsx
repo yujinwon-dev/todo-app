@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import Form from '../components/common/Form'
 import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
-import { signUp } from '../api/auth'
+import useAuth from '../hooks/queries/useAuth'
+import { toast } from 'react-toastify'
+import toastOptions from '../utils/toastOptions'
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -12,6 +14,14 @@ export default function SignUp() {
   const [pw, setPw] = useState('')
   const [pwConfirm, setPwConfirm] = useState('')
   const navigate = useNavigate()
+  const { useSignUp } = useAuth()
+  const { mutate: signUp } = useSignUp({
+    onSuccess: data => {
+      const { message } = data
+      navigate('/auth/login')
+      toast.success(message, toastOptions)
+    },
+  })
 
   function validateUserInput() {
     if (emailRule.test(email) === false || pw.length < 8 || pw !== pwConfirm) {
@@ -26,9 +36,7 @@ export default function SignUp() {
   }, [email, pw, pwConfirm])
 
   function handleSignUp() {
-    signUp(email, pw)
-      .then(() => navigate('/auth/login'))
-      .catch(() => alert('회원가입에 실패했습니다.'))
+    signUp({ email, password: pw })
   }
 
   return (
@@ -70,7 +78,7 @@ export default function SignUp() {
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
@@ -79,9 +87,8 @@ const H1 = styled.h1`
   margin: 1rem 0;
 `
 
-
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -96,7 +103,7 @@ const Input = styled.input`
   border: 1px solid #9a9a9a;
   margin-right: 0.5rem;
   margin-bottom: 1rem;
-  
+
   &:focus,
   &:active {
     box-shadow: none;

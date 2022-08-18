@@ -1,17 +1,18 @@
+import apiInstance from './axios'
+import { AuthData, AuthProps } from '../types/auth'
 
-import apiInstance from './axios';
-
-export interface authData {
-  message: string;
-  token: string;
-}
-
-export const login = async (email: string, password: string): Promise<authData> => {
+export const login = async ({
+  email,
+  password,
+}: AuthProps): Promise<AuthData> => {
   const { data } = await apiInstance.post('/users/login', { email, password })
   return data
 }
 
-export const signUp = async (email: string, password: string): Promise<authData> => {
+export const signUp = async ({
+  email,
+  password,
+}: AuthProps): Promise<AuthData> => {
   const { data } = await apiInstance.post('/users/create', { email, password })
   return data
 }
