@@ -1,5 +1,6 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
-import { AuthData, AuthProps, login, signUp } from "../../api/auth"
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { login, signUp } from '../../api/auth'
+import { AuthData, AuthProps } from '../../types/auth'
 
 const useAuth = () => {
   const useLogin = (options?: UseMutationOptions<AuthData, Error, AuthProps>) => {

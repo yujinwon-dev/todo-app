@@ -1,5 +1,6 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
-import { createTodo, updateTodo, deleteTodo, Todo, CreateTodoProps, UpdateTodoProps, DeleteTodoProps } from "../../api/todo"
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { createTodo, updateTodo, deleteTodo } from '../../api/todo'
+import { Todo, CreateTodoProps, UpdateTodoProps, DeleteTodoProps } from '../../types/todo'
 
 const useMutateTodo = () => {
   const useCreateTodo = (options?: UseMutationOptions<{ data: Todo }, Error, CreateTodoProps>) => {

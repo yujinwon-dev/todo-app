@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import Form from '../common/Form'
-import { Todo } from '../../api/todo'
+import { Todo } from '../../types/todo'
 import useTokenCheck from '../../hooks/useTokenCheck'
 import { useNavigate } from 'react-router-dom'
 import useMutateTodo from '../../hooks/queries/useMutateTodo'

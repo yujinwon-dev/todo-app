@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { getTodos, getTodoById, DeleteTodoProps  } from '../../api/todo'
-import { Todo } from '../../api/todo'
+import { getTodos, getTodoById  } from '../../api/todo'
+import { Todo } from '../../types/todo'
 
 const useTodo = () => {
   const useGetTodos = (options?: UseQueryOptions<{ data: Todo[] }, Error>) => {

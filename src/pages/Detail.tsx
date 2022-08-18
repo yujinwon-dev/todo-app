@@ -1,17 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { useEffect } from 'react'
 import useTodo from '../hooks/queries/useTodo'
 import Loader from '../components/common/Loader'
 import { AxiosError } from 'axios'
-
-const emptyTodo = {
-  title: '',
-  content: '',
-  id: '',
-  createdAt: '',
-  updatedAt: '',
-}
 
 export default function Detail() {
   const { todoId } = useParams()

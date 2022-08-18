@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, Outlet, Link } from 'react-router-dom'
 import TodoItem from '../components/todo/TodoItem'
-import { Todo } from '../api/todo'
+import { Todo } from '../types/todo'
 import useTokenCheck from '../hooks/useTokenCheck'
 import styled from 'styled-components'
 import TodoForm from '../components/todo/TodoForm'
