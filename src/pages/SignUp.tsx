@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import Form from '../components/common/Form'
 import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
-import { signUp } from '../api/auth'
+import useAuth from '../hooks/queries/useAuth'
+import { AxiosError } from 'axios'
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -12,6 +13,17 @@ export default function SignUp() {
   const [pw, setPw] = useState('')
   const [pwConfirm, setPwConfirm] = useState('')
   const navigate = useNavigate()
+  const { useSignUp } = useAuth()
+  const { mutate: signUp } = useSignUp({
+    onSuccess: () => {
+      navigate('/auth/login')
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+      }
+    }
+  })
 
   function validateUserInput() {
     if (emailRule.test(email) === false || pw.length < 8 || pw !== pwConfirm) {
@@ -26,9 +38,7 @@ export default function SignUp() {
   }, [email, pw, pwConfirm])
 
   function handleSignUp() {
-    signUp(email, pw)
-      .then(() => navigate('/auth/login'))
-      .catch(() => alert('회원가입에 실패했습니다.'))
+    signUp({ email, password: pw })
   }
 
   return (

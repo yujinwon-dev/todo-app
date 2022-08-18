@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { useAtom } from 'jotai'
 import { useParams, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { todosAtom } from '../atoms/todo'
-import { getTodoById } from '../api/todo'
 import { useEffect } from 'react'
+import useTodo from '../hooks/queries/useTodo'
+import Loader from '../components/common/Loader'
+import { AxiosError } from 'axios'
 
 const emptyTodo = {
   title: '',
@@ -15,33 +14,33 @@ const emptyTodo = {
 }
 
 export default function Detail() {
-  const [currentTodo, setCurrentTodo] = useState(emptyTodo)
-  const [todos] = useAtom(todosAtom)
   const { todoId } = useParams()
   const navigate = useNavigate()
-
-  async function handleGetTodo() {
-    try {
-      const { data } = await getTodoById(todoId || '')
-      setCurrentTodo(data)
-    } catch (error) {
-      alert('할 일을 불러올 수 없습니다.')
-      navigate('/')
+  const { useGetTodo } = useTodo()
+  const { status, data, error, isFetching } = useGetTodo(todoId || '', {
+    enabled: !!todoId,
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+        navigate('/')
+      }
     }
-  }
-
-  useEffect(() => {
-    handleGetTodo()
-  }, [todoId, todos])
+  })
 
   return (
     <Page>
-      <DetailItem>
-        <H2>{currentTodo.title}</H2>
-        <Content>{currentTodo.content}</Content>
-        <p>작성일: {currentTodo.createdAt.split('T')[0]}</p>
-        <p>수정일: {currentTodo.updatedAt.split('T')[0]}</p>
-      </DetailItem>
+      {
+        status === "loading" ? (
+          <Loader />
+        ) : data && (
+          <DetailItem>
+            <H2>{data.data.title}</H2>
+            <Content>{data.data.content}</Content>
+            <p>작성일: {data.data.createdAt.split('T')[0]}</p>
+            <p>수정일: {data.data.updatedAt.split('T')[0]}</p>
+          </DetailItem>
+        )
+      }
     </Page>
   )
 }

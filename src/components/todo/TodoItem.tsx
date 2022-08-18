@@ -1,22 +1,46 @@
 import { useState } from 'react'
-import { useAtom } from 'jotai'
 import styled from 'styled-components'
 import Form from '../common/Form'
-import { deleteTodo, Todo, updateTodo } from '../../api/todo'
-import { todosAtom } from '../../atoms/todo'
+import { Todo } from '../../api/todo'
 import useTokenCheck from '../../hooks/useTokenCheck'
 import { useNavigate } from 'react-router-dom'
+import useMutateTodo from '../../hooks/queries/useMutateTodo'
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
 export default function TodoItem({ currentTodo }: {
   currentTodo: Todo,
 }) {
-  const [todos, setTodos] = useAtom(todosAtom)
   const [editMode, setEditMode] = useState(false)
   const [inputTitle, setInputTitle] = useState(currentTodo.title)
   const [inputContent, setInputContent] = useState(currentTodo.content)
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
-
+  const queryClient = useQueryClient()
+  const { useUpdateTodo, useDeleteTodo } = useMutateTodo()
+  const { mutate: updateTodo } = useUpdateTodo({
+    onSuccess: () => {
+      queryClient.invalidateQueries(['get_todos'])
+      queryClient.invalidateQueries(['get_todo', currentTodo.id])
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+      }
+    }
+  })
+  const { mutate: deleteTodo } = useDeleteTodo({
+    onSuccess: () => {
+      queryClient.invalidateQueries(['get_todos'])
+      queryClient.invalidateQueries(['get_todo', currentTodo.id])
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+      }
+    }
+  })
+  
   function goToLogin() {
     alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
     navigate('/auth/login')
@@ -30,45 +54,19 @@ export default function TodoItem({ currentTodo }: {
     setEditMode(true)
   }
 
-  async function handleUpdateTodo() {
-    try {
-      const { data } = await updateTodo(currentTodo.id, inputTitle, inputContent)
-      const newTodos = todos.map(todo => {
-        if (todo.id === currentTodo.id) {
-          return data
-        } else {
-          return todo
-        }
-      })
-      setTodos(newTodos)
-    } catch (error) {
-      alert('할 일을 수정할 수 없습니다.')
-    }
-  }
-
-  async function handleDeleteTodo() {
-    try {
-      const responseData = await deleteTodo(currentTodo.id)
-      const newTodos = todos.filter(todo => todo.id !== currentTodo.id)
-      setTodos(newTodos)
-    } catch (error) {
-      alert('할 일을 삭제할 수 없습니다.')
-    }
-  }
-
   function handleClickDelete() {
     if (!isValidToken) {
       goToLogin()
       return
     }
-    handleDeleteTodo()
+    deleteTodo({ todoId: currentTodo.id })
   }
 
   function handleFormSubmit() {
-    handleUpdateTodo()
+    updateTodo({todoId: currentTodo.id, title: inputTitle, content: inputContent })
     setEditMode(false)
   }
-  
+
   return (
     <Li>
       {editMode ? (

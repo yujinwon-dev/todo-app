@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import Form from '../components/common/Form'
 import SubmitButton from '../components/common/SubmitButton'
 import { emailRule } from '../utils/formInputRule'
-import apiInstance from '../api/axios'
-import { login } from '../api/auth'
 import useTokenCheck from '../hooks/useTokenCheck'
+import useAuth from '../hooks/queries/useAuth'
+import apiInstance from '../api/axios'
+import { AxiosError } from 'axios'
 
 export default function Login() {
   const [isDisabled, setIsDisabled] = useState(true)
@@ -14,6 +15,21 @@ export default function Login() {
   const [pw, setPw] = useState('')
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
+  const { useLogin } = useAuth()
+  const { mutate: login } = useLogin({
+    onSuccess: (data) => {
+      const { message, token } = data
+      localStorage.setItem('token', token)
+      apiInstance.defaults.headers.common.Authorization = token
+      alert(message)
+      navigate('/')
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+      }
+    }
+  })
 
   function validateUserInput() {
     if (emailRule.test(email) === false || pw.length < 8) {
@@ -28,15 +44,7 @@ export default function Login() {
   }, [email, pw])
 
   async function handleLogin() {
-    try {
-      const { message, token } = await login(email, pw)
-      localStorage.setItem('token', token)
-      apiInstance.defaults.headers.common.Authorization = token
-      alert(message)
-      navigate('/')
-    } catch (error) {
-      alert('로그인에 실패했습니다.')
-    }
+    login({ email, password: pw })
   }
 
   function handleFormSubmit() {

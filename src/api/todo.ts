@@ -1,4 +1,4 @@
-import apiInstance from './axios';
+import apiInstance from './axios'
 
 export interface Todo {
   title: string;
@@ -8,36 +8,38 @@ export interface Todo {
   updatedAt: string;
 }
 
-export interface TodoData {
-  data: Todo
+export interface CreateTodoProps {
+  title: string;
+  content: string;
 }
 
-export interface TodosData {
-  data: Todo[]
+export interface DeleteTodoProps {
+  todoId: string
 }
 
-export const getTodos = async (): Promise<TodosData> => {
+export interface UpdateTodoProps extends CreateTodoProps, DeleteTodoProps{}
+
+export const getTodos = async () => {
   const { data } = await apiInstance.get('/todos')
   return data
 }
 
-export const getTodoById = async (id: string): Promise<TodoData> => {
-  const { data } = await apiInstance.get(`/todos/${id}`)
+export const getTodoById = async (todoId: string) => {
+  const { data } = await apiInstance.get(`/todos/${todoId}`)
   return data
 }
 
-
-export const createTodo = async (title: string, content: string): Promise<TodoData> => {
+export const createTodo = async ({ title, content }: CreateTodoProps) => {
   const { data } = await apiInstance.post('/todos', { title, content })
   return data
 }
 
-export const updateTodo = async (id: string, title: string, content: string): Promise<TodoData>  => {
-  const { data } = await apiInstance.put(`/todos/${id}`, { title, content })
+export const updateTodo = async ({ todoId, title, content }: UpdateTodoProps)  => {
+  const { data } = await apiInstance.put(`/todos/${todoId}`, { title, content })
   return data
 }
 
-export const deleteTodo = async (id: string): Promise<{ data: null }> => {
-  const { data } = await apiInstance.delete(`/todos/${id}`)
+export const deleteTodo = async (todoId: DeleteTodoProps) => {
+  const { data } = await apiInstance.delete(`/todos/${todoId}`)
   return data
 }

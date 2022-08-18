@@ -1,45 +1,36 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAtom } from 'jotai'
 import styled from 'styled-components'
 import Form from '../common/Form'
 import SubmitButton from '../common/SubmitButton'
-import { getTodos, createTodo } from '../../api/todo'
-import { todosAtom } from '../../atoms/todo'
 import useTokenCheck from '../../hooks/useTokenCheck'
+import useMutateTodo from '../../hooks/queries/useMutateTodo'
+import { AxiosError } from 'axios'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function TodoForm() {
-  const [todos, setTodos] = useAtom(todosAtom)
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
+  const queryClient = useQueryClient()
+  const { useCreateTodo } = useMutateTodo()
+  const { mutate: createTodo } = useCreateTodo({
+    onSuccess: () => {
+      setTitle('')
+      setContent('')
+      queryClient.invalidateQueries(['get_todos'])
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.details)
+      }
+    }
+  })
 
   function goToLogin() {
     alert('로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.')
     navigate('/auth/login')
-  }
-
-  // THOUGHT: handleGetTodos 함수를 훅 or utils로 뺄까 고민 중
-  async function handleGetTodos() {
-    try {
-      const { data } = await getTodos()
-      setTodos(data)
-    } catch (error) {
-      alert('할 일 목록을 가져올 수 없습니다.')
-    }
-  }
-
-  async function handleCreateTodo() {
-    try {
-      // create 시 리턴값이 없어서 다시 get 요청 보내는 코드 유지
-      const responseData = await createTodo(title, content)
-      setTitle('')
-      setContent('')
-      handleGetTodos()
-    } catch (error) {
-      alert('할 일을 생성할 수 없습니다.')
-    }
   }
 
   function handleFormSubmit() {
@@ -47,7 +38,7 @@ export default function TodoForm() {
       goToLogin()
       return
     }
-    handleCreateTodo()
+    createTodo({ title, content })
   }
 
   return (
