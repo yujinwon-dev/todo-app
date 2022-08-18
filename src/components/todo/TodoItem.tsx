@@ -17,6 +17,8 @@ export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
   const queryClient = useQueryClient()
   const { useUpdateTodo, useDeleteTodo } = useMutateTodo()
   const { mutate: updateTodo } = useUpdateTodo({
+    onSuccess: () =>
+      queryClient.invalidateQueries(['get_todo', currentTodo.id]),
     onError: () => navigate('/intro'),
   })
   const { mutate: deleteTodo } = useDeleteTodo({
