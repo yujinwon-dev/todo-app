@@ -15,11 +15,11 @@ export default function Home() {
   const isValidToken = useTokenCheck()
   const { useGetTodos } = useTodo()
   const { status, data, error, isFetching } = useGetTodos({
-    onError: (error) => {
+    onError: error => {
       if (error instanceof AxiosError) {
         alert(error.response?.data.details)
       }
-    }
+    },
   })
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function Home() {
       return
     }
   }, [])
-  
+
   return (
     <Page>
       <HeaderWrapper>
@@ -41,20 +41,19 @@ export default function Home() {
       <OutletContainer>
         <div>
           <TodoForm />
-          {
-            status === "loading" ? (
-              <Loader />
-            ) : data && (
+          {status === 'loading' ? (
+            <Loader />
+          ) : (
+            data && (
               <Ul>
-                {data.data && data.data.length > 0 && data.data.map((todo: Todo) => (
-                  <TodoItem
-                    key={todo.id}
-                    currentTodo={todo}
-                  />
-                ))}
+                {data.data &&
+                  data.data.length > 0 &&
+                  data.data.map((todo: Todo) => (
+                    <TodoItem key={todo.id} currentTodo={todo} />
+                  ))}
               </Ul>
             )
-          }
+          )}
         </div>
         <Outlet />
       </OutletContainer>
@@ -64,7 +63,7 @@ export default function Home() {
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   align-items: center;
 `
 
@@ -84,7 +83,7 @@ const H1 = styled.h1`
 `
 
 const OutletContainer = styled.div`
-  display: flex;  
+  display: flex;
 `
 
 const Ul = styled.ul`

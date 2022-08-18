@@ -18,11 +18,11 @@ export default function SignUp() {
     onSuccess: () => {
       navigate('/auth/login')
     },
-    onError: (error) => {
+    onError: error => {
       if (error instanceof AxiosError) {
         alert(error.response?.data.details)
       }
-    }
+    },
   })
 
   function validateUserInput() {
@@ -80,7 +80,7 @@ export default function SignUp() {
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `
@@ -89,9 +89,8 @@ const H1 = styled.h1`
   margin: 1rem 0;
 `
 
-
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -106,7 +105,7 @@ const Input = styled.input`
   border: 1px solid #9a9a9a;
   margin-right: 0.5rem;
   margin-bottom: 1rem;
-  
+
   &:focus,
   &:active {
     box-shadow: none;

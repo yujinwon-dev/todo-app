@@ -1,11 +1,16 @@
 import styled from 'styled-components'
 
-export default function SubmitButton({ value, disabled } : {
-  value: string,
-  disabled: boolean,
+export default function SubmitButton({
+  value,
+  disabled,
+}: {
+  value: string
+  disabled: boolean
 }) {
   return (
-    <Button type="submit" disabled={disabled}>{value}</Button>
+    <Button type="submit" disabled={disabled}>
+      {value}
+    </Button>
   )
 }
 

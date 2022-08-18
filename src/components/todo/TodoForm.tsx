@@ -21,11 +21,11 @@ export default function TodoForm() {
       setContent('')
       queryClient.invalidateQueries(['get_todos'])
     },
-    onError: (error) => {
+    onError: error => {
       if (error instanceof AxiosError) {
         alert(error.response?.data.details)
       }
-    }
+    },
   })
 
   function goToLogin() {
@@ -53,10 +53,10 @@ export default function TodoForm() {
             value={title}
             onChange={e => setTitle(e.target.value)}
             required
-            />
+          />
         </Label>
         <Label htmlFor="content">
-        <LabelSpan>내용</LabelSpan>
+          <LabelSpan>내용</LabelSpan>
           <Textarea
             id="content"
             name="content"
@@ -83,7 +83,7 @@ const LabelsContainer = styled.div`
 `
 
 const Label = styled.label`
-  display: flex; 
+  display: flex;
 `
 
 const LabelSpan = styled.span`
@@ -98,21 +98,21 @@ const Input = styled.input`
   border: none;
   margin-right: 0.5rem;
   margin-bottom: 1rem;
-  background-color: #F6F8FA;
-  
+  background-color: #f6f8fa;
+
   &:focus,
   &:active {
     box-shadow: none;
     outline: none;
   }
-  `
+`
 
 const Textarea = styled.textarea`
   padding: 0 1rem;
   border-radius: 5px;
   border: none;
   margin-right: 0.5rem;
-  background-color: #F6F8FA;
+  background-color: #f6f8fa;
 `
 
 const ButtonWrapper = styled.div`

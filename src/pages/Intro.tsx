@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom"
-import styled from "styled-components"
-import useTokenCheck from "../hooks/useTokenCheck"
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import useTokenCheck from '../hooks/useTokenCheck'
 
 export default function Intro() {
   const navigate = useNavigate()
@@ -18,7 +18,9 @@ export default function Intro() {
   return (
     <ButtonsContainer>
       <LoginButton onClick={() => navigateToLogin()}>로그인</LoginButton>
-      <SignUpButton onClick={() => navigate('/auth/signup')}>회원가입</SignUpButton>
+      <SignUpButton onClick={() => navigate('/auth/signup')}>
+        회원가입
+      </SignUpButton>
     </ButtonsContainer>
   )
 }

@@ -10,20 +10,20 @@ export default function Detail() {
   const { useGetTodo } = useTodo()
   const { status, data, error, isFetching } = useGetTodo(todoId || '', {
     enabled: !!todoId,
-    onError: (error) => {
+    onError: error => {
       if (error instanceof AxiosError) {
         alert(error.response?.data.details)
         navigate('/')
       }
-    }
+    },
   })
 
   return (
     <Page>
-      {
-        status === "loading" ? (
-          <Loader />
-        ) : data && (
+      {status === 'loading' ? (
+        <Loader />
+      ) : (
+        data && (
           <DetailItem>
             <H2>{data.data.title}</H2>
             <Content>{data.data.content}</Content>
@@ -31,14 +31,14 @@ export default function Detail() {
             <p>수정일: {data.data.updatedAt.split('T')[0]}</p>
           </DetailItem>
         )
-      }
+      )}
     </Page>
   )
 }
 
 const Page = styled.div`
   display: flex;
-  flex-direction : column;
+  flex-direction: column;
   align-items: center;
 `
 

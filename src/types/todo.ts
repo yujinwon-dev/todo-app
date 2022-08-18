@@ -1,14 +1,14 @@
 export interface Todo {
-  title: string;
-  content: string;
-  id: string;
-  createdAt: string;
-  updatedAt: string;
+  title: string
+  content: string
+  id: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface CreateTodoProps {
-  title: string;
-  content: string;
+  title: string
+  content: string
 }
 
 export interface DeleteTodoProps {
