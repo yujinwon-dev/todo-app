@@ -26,6 +26,7 @@ npm run dev
 ## 리팩토링 과정
 
 - [1차 리팩토링](https://velog.io/@wonyuuu/React-Todo-App-%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81)
+- [2차 리팩토링](https://github.com/yujinwon-dev/wanted-pre-onboarding-challenge-fe-1/pull/1)
 
 ## 과제 구현 목록
 
