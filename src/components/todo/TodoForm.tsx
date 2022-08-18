@@ -9,8 +9,8 @@ import { AxiosError } from 'axios'
 import { useQueryClient } from '@tanstack/react-query'
 
 export default function TodoForm() {
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const navigate = useNavigate()
   const isValidToken = useTokenCheck()
   const queryClient = useQueryClient()
