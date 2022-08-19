@@ -72,13 +72,11 @@
   |  |  ├── 💾auth.ts
   |  |  └── 💾todo.ts
   |  ├── 📂components
-  |  |  ├── 📂common
-  |  |  |  ├── 💾Form.tsx
-  |  |  |  ├── 💾LogoutButton.tsx
-  |  |  |  └── 💾SubmitButton.tsx
-  |  |  └── 📂todo
-  |  |     ├── 💾TodoForm.tsx
-  |  |     └── 💾TodoItem.tsx
+  |  |  ├── 💾Form.tsx
+  |  |  ├── 💾FormButton.tsx
+  |  |  ├── 💾LogoutButton.tsx
+  |  |  ├── 💾TodoForm.tsx
+  |  |  └── 💾TodoItem.tsx
   |  ├── 📂hooks
   |  |  └── 💾useTokenCheck.ts
   |  ├── 📂pages
@@ -98,7 +96,7 @@
   ├── 💾tsconfig.node.json
   └── 💾vite.config.ts
   ```
-
+  
 - After
 
   ```
