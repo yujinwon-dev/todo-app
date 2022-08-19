@@ -9,7 +9,7 @@ import Loader from '../components/common/Loader'
 
 export default function Home() {
   const { useGetTodos } = useTodo()
-  const { status, data } = useGetTodos({})
+  const { status, data } = useGetTodos()
 
   return (
     <Page>

@@ -4,7 +4,7 @@ import {
   Todo,
   CreateTodoProps,
   UpdateTodoProps,
-  DeleteTodoProps,
+  GetDeleteTodoProps,
 } from '../../types/todo'
 
 const useMutateTodo = () => {
@@ -21,7 +21,7 @@ const useMutateTodo = () => {
   }
 
   const useDeleteTodo = (
-    options?: UseMutationOptions<{ data: null }, Error, DeleteTodoProps>,
+    options?: UseMutationOptions<{ data: null }, Error, GetDeleteTodoProps>,
   ) => {
     return useMutation(deleteTodo, options)
   }
