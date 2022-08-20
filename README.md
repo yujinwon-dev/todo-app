@@ -59,89 +59,49 @@
 
 
 ## 폴더 구조
-
-- Before
-
-  ```
-  ├── 📂src
-  |  ├── 📂api
-  |  |  ├── 💾auth.ts
-  |  |  ├── 💾axios.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂atoms
-  |  |  ├── 💾auth.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂components
-  |  |  ├── 💾Form.tsx
-  |  |  ├── 💾FormButton.tsx
-  |  |  ├── 💾LogoutButton.tsx
-  |  |  ├── 💾TodoForm.tsx
-  |  |  └── 💾TodoItem.tsx
-  |  ├── 📂hooks
-  |  |  └── 💾useTokenCheck.ts
-  |  ├── 📂pages
-  |  |  ├── 💾Detail.tsx
-  |  |  ├── 💾Home.tsx
-  |  |  ├── 💾Intro.tsx
-  |  |  ├── 💾Login.tsx
-  |  |  ├── 💾PrivateRoute.tsx
-  |  |  └── 💾SignUp.tsx
-  |  ├── 📂utils
-  |  |  └── 💾formInputRule.ts
-  |  ├── 💾App.tsx
-  |  ├── 💾index.css
-  |  ├── 💾main.tsx
-  |  └── 💾vite-env.d.ts
-  ├── 💾tsconfig.json
-  ├── 💾tsconfig.node.json
-  └── 💾vite.config.ts
-  ```
-  
-- After
-
-  ```
-  ├── 📂src
-  |  ├── 📂api
-  |  |  ├── 💾auth.ts
-  |  |  ├── 💾axios.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂components
-  |  |  ├── 📂common
-  |  |  |  ├── 💾Form.tsx
-  |  |  |  ├── 💾Loader.tsx
-  |  |  |  ├── 💾LogoutButton.tsx
-  |  |  |  └── 💾SubmitButton.tsx
-  |  |  └── 📂todo
-  |  |     ├── 💾TodoForm.tsx
-  |  |     └── 💾TodoItem.tsx
-  |  ├── 📂hooks
-  |  |  ├── 📂queries
-  |  |  |  ├── 💾useAuth.ts
-  |  |  |  ├── 💾useMutateTodo.ts
-  |  |  |  └── 💾useTodo.ts
-  |  |  ├── 💾useAuthToken.ts
-  |  |  └── 💾useTokenCheck.ts
-  |  ├── 📂pages
-  |  |  ├── 💾Detail.tsx
-  |  |  ├── 💾Home.tsx
-  |  |  ├── 💾Intro.tsx
-  |  |  ├── 💾Login.tsx
-  |  |  ├── 💾PrivateRoute.tsx
-  |  |  └── 💾SignUp.tsx
-  |  ├── 📂types
-  |  |  ├── 💾auth.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂utils
-  |  |  ├── 💾formInputRule.ts
-  |  |  └── 💾toastOptions.ts
-  |  ├── 💾App.tsx
-  |  ├── 💾index.css
-  |  ├── 💾main.tsx
-  |  └── 💾vite-env.d.ts
-  ├── 💾tsconfig.json
-  ├── 💾tsconfig.node.json
-  └── 💾vite.config.ts
-  ```
+```
+├── 📂src
+|  ├── 📂api
+|  |  ├── 💾auth.ts
+|  |  ├── 💾axios.ts
+|  |  └── 💾todo.ts
+|  ├── 📂components
+|  |  ├── 📂common
+|  |  |  ├── 💾Form.tsx
+|  |  |  ├── 💾Loader.tsx
+|  |  |  ├── 💾LogoutButton.tsx
+|  |  |  └── 💾SubmitButton.tsx
+|  |  └── 📂todo
+|  |     ├── 💾TodoForm.tsx
+|  |     └── 💾TodoItem.tsx
+|  ├── 📂hooks
+|  |  ├── 📂queries
+|  |  |  ├── 💾useAuth.ts
+|  |  |  ├── 💾useMutateTodo.ts
+|  |  |  └── 💾useTodo.ts
+|  |  ├── 💾useAuthToken.ts
+|  |  └── 💾useTokenCheck.ts
+|  ├── 📂pages
+|  |  ├── 💾Detail.tsx
+|  |  ├── 💾Home.tsx
+|  |  ├── 💾Intro.tsx
+|  |  ├── 💾Login.tsx
+|  |  ├── 💾PrivateRoute.tsx
+|  |  └── 💾SignUp.tsx
+|  ├── 📂types
+|  |  ├── 💾auth.ts
+|  |  └── 💾todo.ts
+|  ├── 📂utils
+|  |  ├── 💾formInputRule.ts
+|  |  └── 💾toastOptions.ts
+|  ├── 💾App.tsx
+|  ├── 💾index.css
+|  ├── 💾main.tsx
+|  └── 💾vite-env.d.ts
+├── 💾tsconfig.json
+├── 💾tsconfig.node.json
+└── 💾vite.config.ts
+```
 
 
 
