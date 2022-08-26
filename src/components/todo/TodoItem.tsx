@@ -82,7 +82,9 @@ export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
         </Form>
       ) : (
         <>
-          <TodoTitleWrapper onClick={() => navigate(`/${currentTodo.id}`)}>
+          <TodoTitleWrapper
+            onClick={() => navigate(`/todos/${currentTodo.id}`)}
+          >
             <TodoTitle>{currentTodo.title}</TodoTitle>
           </TodoTitleWrapper>
           <div>
