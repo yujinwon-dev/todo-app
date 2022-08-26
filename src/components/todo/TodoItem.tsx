@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import Form from '../common/Form'
 import { Todo } from '../../types/todo'
-import { useNavigate } from 'react-router-dom'
 import useMutateTodo from '../../hooks/queries/useMutateTodo'
-import { useQueryClient } from '@tanstack/react-query'
 import { useAuthToken } from '../../hooks/useAuthToken'
+import todoKeys from '../../hooks/queries/keys/todoKeys'
 
 export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
   const [editMode, setEditMode] = useState(false)
@@ -18,13 +19,13 @@ export default function TodoItem({ currentTodo }: { currentTodo: Todo }) {
   const { useUpdateTodo, useDeleteTodo } = useMutateTodo()
   const { mutate: updateTodo } = useUpdateTodo({
     onSuccess: () =>
-      queryClient.invalidateQueries(['get_todo', currentTodo.id]),
+      queryClient.invalidateQueries(todoKeys.detail(currentTodo.id)),
     onError: () => navigate('/intro'),
   })
   const { mutate: deleteTodo } = useDeleteTodo({
     onSuccess: () => {
-      queryClient.invalidateQueries(['get_todos'])
-      queryClient.invalidateQueries(['get_todo', currentTodo.id])
+      queryClient.invalidateQueries(todoKeys.all)
+      queryClient.invalidateQueries(todoKeys.detail(currentTodo.id))
     },
     onError: () => navigate('/intro'),
   })

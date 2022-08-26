@@ -1,8 +1,8 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
 import { getTodos, getTodoById } from '../../api/todo'
 import { Todo } from '../../types/todo'
 import { useAuthToken } from '../useAuthToken'
+import todoKeys from './keys/todoKeys'
 
 const useTodo = () => {
   const { getToken } = useAuthToken()
@@ -10,7 +10,7 @@ const useTodo = () => {
 
   const useGetTodos = (options?: UseQueryOptions<{ data: Todo[] }, Error>) => {
     return useQuery<{ data: Todo[] }, Error>(
-      ['get_todos'],
+      todoKeys.all,
       () => getTodos(authToken),
       options,
     )
@@ -21,7 +21,7 @@ const useTodo = () => {
     options?: UseQueryOptions<{ data: Todo }, Error>,
   ) => {
     return useQuery<{ data: Todo }, Error>(
-      ['get_todo', todoId],
+      todoKeys.detail(todoId),
       () => getTodoById({ todoId, authToken }),
       options,
     )
