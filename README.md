@@ -1,4 +1,4 @@
-# 원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제
+# 원티드 프리온보딩 프론트엔드 챌린지 8월: CRUD w React Query
 
 ## 실행 방법
 
@@ -26,7 +26,7 @@
 - [리팩토링 과정](##리팩토링-과정)
 - [폴더 구조](##폴더-구조)
 - [과제 구현 목록](##과제-구현-목록)
-- [고민한-부분](##고민한-부분)
+- [고민한 부분](##고민한-부분)
 - [한계점 및 개선 사항](##한계점-및-개선-사항)
 
 
@@ -59,89 +59,49 @@
 
 
 ## 폴더 구조
-
-- Before
-
-  ```
-  ├── 📂src
-  |  ├── 📂api
-  |  |  ├── 💾auth.ts
-  |  |  ├── 💾axios.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂atoms
-  |  |  ├── 💾auth.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂components
-  |  |  ├── 💾Form.tsx
-  |  |  ├── 💾FormButton.tsx
-  |  |  ├── 💾LogoutButton.tsx
-  |  |  ├── 💾TodoForm.tsx
-  |  |  └── 💾TodoItem.tsx
-  |  ├── 📂hooks
-  |  |  └── 💾useTokenCheck.ts
-  |  ├── 📂pages
-  |  |  ├── 💾Detail.tsx
-  |  |  ├── 💾Home.tsx
-  |  |  ├── 💾Intro.tsx
-  |  |  ├── 💾Login.tsx
-  |  |  ├── 💾PrivateRoute.tsx
-  |  |  └── 💾SignUp.tsx
-  |  ├── 📂utils
-  |  |  └── 💾formInputRule.ts
-  |  ├── 💾App.tsx
-  |  ├── 💾index.css
-  |  ├── 💾main.tsx
-  |  └── 💾vite-env.d.ts
-  ├── 💾tsconfig.json
-  ├── 💾tsconfig.node.json
-  └── 💾vite.config.ts
-  ```
-  
-- After
-
-  ```
-  ├── 📂src
-  |  ├── 📂api
-  |  |  ├── 💾auth.ts
-  |  |  ├── 💾axios.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂components
-  |  |  ├── 📂common
-  |  |  |  ├── 💾Form.tsx
-  |  |  |  ├── 💾Loader.tsx
-  |  |  |  ├── 💾LogoutButton.tsx
-  |  |  |  └── 💾SubmitButton.tsx
-  |  |  └── 📂todo
-  |  |     ├── 💾TodoForm.tsx
-  |  |     └── 💾TodoItem.tsx
-  |  ├── 📂hooks
-  |  |  ├── 📂queries
-  |  |  |  ├── 💾useAuth.ts
-  |  |  |  ├── 💾useMutateTodo.ts
-  |  |  |  └── 💾useTodo.ts
-  |  |  ├── 💾useAuthToken.ts
-  |  |  └── 💾useTokenCheck.ts
-  |  ├── 📂pages
-  |  |  ├── 💾Detail.tsx
-  |  |  ├── 💾Home.tsx
-  |  |  ├── 💾Intro.tsx
-  |  |  ├── 💾Login.tsx
-  |  |  ├── 💾PrivateRoute.tsx
-  |  |  └── 💾SignUp.tsx
-  |  ├── 📂types
-  |  |  ├── 💾auth.ts
-  |  |  └── 💾todo.ts
-  |  ├── 📂utils
-  |  |  ├── 💾formInputRule.ts
-  |  |  └── 💾toastOptions.ts
-  |  ├── 💾App.tsx
-  |  ├── 💾index.css
-  |  ├── 💾main.tsx
-  |  └── 💾vite-env.d.ts
-  ├── 💾tsconfig.json
-  ├── 💾tsconfig.node.json
-  └── 💾vite.config.ts
-  ```
+```
+├── 📂src
+|  ├── 📂api
+|  |  ├── 💾auth.ts
+|  |  ├── 💾axios.ts
+|  |  └── 💾todo.ts
+|  ├── 📂components
+|  |  ├── 📂common
+|  |  |  ├── 💾Form.tsx
+|  |  |  ├── 💾Loader.tsx
+|  |  |  ├── 💾LogoutButton.tsx
+|  |  |  └── 💾SubmitButton.tsx
+|  |  └── 📂todo
+|  |     ├── 💾TodoForm.tsx
+|  |     └── 💾TodoItem.tsx
+|  ├── 📂hooks
+|  |  ├── 📂queries
+|  |  |  ├── 💾useAuth.ts
+|  |  |  ├── 💾useMutateTodo.ts
+|  |  |  └── 💾useTodo.ts
+|  |  ├── 💾useAuthToken.ts
+|  |  └── 💾useTokenCheck.ts
+|  ├── 📂pages
+|  |  ├── 💾Detail.tsx
+|  |  ├── 💾Home.tsx
+|  |  ├── 💾Intro.tsx
+|  |  ├── 💾Login.tsx
+|  |  ├── 💾PrivateRoute.tsx
+|  |  └── 💾SignUp.tsx
+|  ├── 📂types
+|  |  ├── 💾auth.ts
+|  |  └── 💾todo.ts
+|  ├── 📂utils
+|  |  ├── 💾formInputRule.ts
+|  |  └── 💾toastOptions.ts
+|  ├── 💾App.tsx
+|  ├── 💾index.css
+|  ├── 💾main.tsx
+|  └── 💾vite-env.d.ts
+├── 💾tsconfig.json
+├── 💾tsconfig.node.json
+└── 💾vite.config.ts
+```
 
 
 
