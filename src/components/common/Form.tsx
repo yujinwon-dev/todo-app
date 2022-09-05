@@ -24,5 +24,6 @@ const StyledForm = styled.form`
   display: flex;
   flex-flow: column wrap;
   align-items: center;
+  max-width: 500px;
   margin: 1rem;
 `
