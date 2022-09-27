@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import Form from '../common/Form'
 import SubmitButton from '../common/SubmitButton'
 import useMutateTodo from '../../hooks/queries/useMutateTodo'
-import { useQueryClient } from '@tanstack/react-query'
 import { useAuthToken } from '../../hooks/useAuthToken'
-import { useNavigate } from 'react-router-dom'
+import todoKeys from '../../hooks/queries/keys/todoKeys'
 
 export default function TodoForm() {
   const [title, setTitle] = useState('')
@@ -19,7 +20,7 @@ export default function TodoForm() {
     onSuccess: () => {
       setTitle('')
       setContent('')
-      queryClient.invalidateQueries(['get_todos'])
+      queryClient.invalidateQueries(todoKeys.all)
     },
     onError: () => navigate('/intro'),
   })

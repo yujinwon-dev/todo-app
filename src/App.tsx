@@ -16,6 +16,7 @@ import { AxiosError } from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import toastOptions from './utils/toastOptions'
+import PageNotFound from './pages/PageNotFound'
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -43,14 +44,15 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="intro" element={<Intro />} />
-          <Route path="auth/login" element={<Login />} />
-          <Route path="auth/signup" element={<SignUp />} />
+          <Route path="/intro" element={<Intro />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/signup" element={<SignUp />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />}>
-              <Route path=":todoId" element={<Detail />} />
+              <Route path="/todos/:todoId" element={<Detail />} />
             </Route>
           </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>
